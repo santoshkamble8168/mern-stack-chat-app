@@ -1,2 +1,2 @@
-# mern-stack-chat-app
-MERN stack chat app
+# chat-app-mern-api
+Chat application MERN stack API
