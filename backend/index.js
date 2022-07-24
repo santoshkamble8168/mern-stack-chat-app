@@ -9,6 +9,7 @@ const app = express()
 //routes
 const userRoutes = require("./routes/userRoutes")
 const authRoutes = require("./routes/authRoutes")
+const chatRoutes = require("./routes/chatRoutes")
 
 if (envConfig.error) {
     throw new Error("⚠️  Couldn't find .env file  ⚠️");
@@ -23,6 +24,7 @@ app.use(cors())
 const rootRoute = "/api/v1"
 app.use(rootRoute, userRoutes)
 app.use(rootRoute, authRoutes)
+app.use(rootRoute, chatRoutes)
 
 app.use(notFound)
 app.use(errorHandler)
