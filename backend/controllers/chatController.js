@@ -28,7 +28,11 @@ exports.getOneToOneChat = asyncHandler(async(req, res) => {
 
     if (isChat.length > 0) {
         //if chat exist
-        res.send(isChat[0])
+        //res.send(isChat[0])
+        res.status(200).json({
+          success: true,
+          item: isChat[0],
+        });
     }else{
       //if chat not exist - create one
       let newChat = {
