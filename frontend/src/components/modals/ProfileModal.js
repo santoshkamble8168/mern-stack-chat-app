@@ -50,7 +50,7 @@ const ProfileModal = ({user, children}) => {
             <Image
                 borderRadius="full"
                 boxSize="150px"
-                src={user.avatar}
+                src={user.pic}
                 alt={user.name}
             />
             <Text 

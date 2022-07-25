@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
+import { Avatar, Box, Button, Stack, Text, useToast } from "@chakra-ui/react";
 import { ChatState } from "../../context/ChatProvider";
 import axios from "../../axios";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../../config/ChatConfig";
+import { GroupChatModal } from "../modals/GroupChatModal";
 
-const MyChatList = () => {
+const MyChatList = ({ reFetch }) => {
   const [loggedUser, setLoggedUser] = useState();
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
   const toast = useToast();
@@ -33,9 +34,10 @@ const MyChatList = () => {
   };
 
   useEffect(() => {
-    setLoggedUser(JSON.parse(localStorage.getItem("user")));
+    const userData = JSON.parse(localStorage.getItem("user"));
+    setLoggedUser(userData?.item);
     fetchAllChats();
-  }, []);
+  }, [reFetch]);
 
   return (
     <Box
@@ -59,13 +61,15 @@ const MyChatList = () => {
         alignItems="center"
       >
         My Chats
-        <Button
-          display="flex"
-          fontSize={{ base: "17px", md: "10px", lg: "17px" }}
-          rightIcon={<AddIcon />}
-        >
-          New Group Chat
-        </Button>
+        <GroupChatModal>
+          <Button
+            display="flex"
+            fontSize={{ base: "17px", md: "10px", lg: "17px" }}
+            rightIcon={<AddIcon />}
+          >
+            New Group Chat
+          </Button>
+        </GroupChatModal>
       </Box>
 
       <Box
@@ -90,7 +94,15 @@ const MyChatList = () => {
                 py="2"
                 borderRadius="lg"
                 key={chat._id}
+                display="flex"
               >
+                <Avatar
+                  size={"sm"}
+                  cursor="pointer"
+                  name={chat.name}
+                  src={chat.isGroupChat ? chat.name : chat.avatar}
+                  style={{ marginRight: "10px" }}
+                />
                 <Text>
                   {!chat.isGroupChat
                     ? getSender(loggedUser, chat.users)
