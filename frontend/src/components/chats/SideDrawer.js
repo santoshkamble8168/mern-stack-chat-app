@@ -26,6 +26,7 @@ import {
   Input,
   useToast,
   Spinner,
+  Badge,
 } from "@chakra-ui/react";
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { ChatState } from '../../context/ChatProvider';
@@ -35,13 +36,21 @@ import { useDisclosure } from '@chakra-ui/react';
 import axios from '../../axios';
 import ChatLoading from './ChatLoading';
 import UsersListItem from './UsersListItem';
+import { getSender } from '../../config/ChatConfig';
 
 const SideDrawer = () => {
   const [search, setSearch] = useState("")
   const [searchResult, setSearchResult] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [loadingChat, setLoadingChat] = useState()
-  const {user, setSelectedChat, chats, setChats} = ChatState()
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
   const navigate = useNavigate()
   const { isOpen, onOpen, onClose} = useDisclosure()
   const toast = useToast();
@@ -148,10 +157,38 @@ const SideDrawer = () => {
         </Text>
         <div>
           <Menu>
-            <MenuButton p="1">
+            <MenuButton p="1" position="relative">
+              {notification.length > 0 && (
+                <span className="notification">{notification.length}</span>
+              )}
               <BellIcon fontSize="2xl" m="1" />
             </MenuButton>
-            {/* <MenuList /> */}
+            <MenuList pl="2">
+              {!notification.length ? (
+                "No new messages"
+              ) : (
+                <>
+                  {notification.map((notify) => (
+                    <MenuItem
+                      key={notify._id}
+                      onClick={() => {
+                        setSelectedChat(notify.chat);
+                        setNotification(
+                          notification.filter((n) => n !== notify)
+                        );
+                      }}
+                    >
+                      {notify.chat.isGroupChat
+                        ? `New Message on ${notify.chat.chatName}`
+                        : `New Message from ${getSender(
+                            user.item,
+                            notify.chat.users
+                          )}`}
+                    </MenuItem>
+                  ))}
+                </>
+              )}
+            </MenuList>
           </Menu>
 
           <Menu>

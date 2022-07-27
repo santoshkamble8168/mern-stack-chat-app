@@ -25,7 +25,7 @@ import UsersListItem from "../chats/UsersListItem";
 import ChatLoading from "../chats/ChatLoading";
 import UserBadgeItem from "../chats/UserBadgeItem";
 
-const UpdateGroupChatModal = ({ reFetch, setReFetch }) => {
+const UpdateGroupChatModal = ({ reFetch, setReFetch, getAllChats }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [groupChatName, setGroupChatName] = useState();
   const [search, setSearch] = useState("");
@@ -72,11 +72,15 @@ const UpdateGroupChatModal = ({ reFetch, setReFetch }) => {
         config
       );
 
-      newUser._id === user.item._id ? setSelectedChat() : setSelectedChat(data.item);
+      newUser._id === user.item._id
+        ? setSelectedChat()
+        : setSelectedChat(data.item);
+      
+      getAllChats()
       setReFetch(!reFetch);
       setLoading(false);
     } catch (error) {
-        console.log("error", error);
+      console.log("error", error);
       setLoading(false);
       toast({
         title: "Something went wrong, Please try again",
@@ -305,7 +309,10 @@ const UpdateGroupChatModal = ({ reFetch, setReFetch }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="red" onClick={() => handleDeleteUser(user.item)}>
+            <Button
+              colorScheme="red"
+              onClick={() => handleDeleteUser(user.item)}
+            >
               Leave Group
             </Button>
           </ModalFooter>

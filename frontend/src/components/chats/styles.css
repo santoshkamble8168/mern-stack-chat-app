@@ -1,0 +1,26 @@
+.messages{
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+.typing{
+    background-color: #38b2ac;
+    color: #ffffff;
+    padding: 2px 15px;
+    border-radius: 10px;     
+    font-size: 12px;
+}
+
+.notification{
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    background-color: tomato;
+    color: #ffffff;
+    right: 20px;
+    top: -3px;
+    font-size: 10px;
+}
+

@@ -4,7 +4,7 @@ import { ChatState } from "../../context/ChatProvider";
 import axios from "../../axios";
 import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "./ChatLoading";
-import { getSender } from "../../config/ChatConfig";
+import { getSender, getSenderDetails } from "../../config/ChatConfig";
 import { GroupChatModal } from "../modals/GroupChatModal";
 
 const MyChatList = ({ reFetch }) => {
@@ -99,8 +99,12 @@ const MyChatList = ({ reFetch }) => {
                 <Avatar
                   size={"sm"}
                   cursor="pointer"
-                  name={chat.name}
-                  src={chat.isGroupChat ? chat.name : chat.avatar}
+                  name={chat.chatName}
+                  src={
+                    chat.isGroupChat
+                      ? chat.chatName
+                      : getSenderDetails(loggedUser, chat?.users).pic
+                  }
                   style={{ marginRight: "10px" }}
                 />
                 <Text>
